@@ -1,7 +1,6 @@
 import './App.css';
 import {
   Routes,
-  Switch,
   Route,
   // Link
 } from 'react-router-dom';

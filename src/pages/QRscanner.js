@@ -9,29 +9,47 @@ function QRscanner() {
   const [verified, setVerified] = useState(false);
 
   useEffect(() => {
-    console.log(data);
-    for (let i = 0; i < users.length; i++) {
-      if (data === users[i]) {
-        // handleView()
-        setVerified(!verified);
-        return;
-      } else {
-        // console.log('false')
-        setVerified(false);
-      }
-      console.log(verified);
+    const isReg = users.includes(data)
+    console.log(typeof data, data)
+    console.log(typeof users[0])
+    if (isReg) {
+      setVerified(isReg)
     }
+    console.log(verified)
+    // console.log(data);
+    // for (let i = 0; i < users.length; i++) {
+    //   if (data === users[i]) {
+    //     setVerified(!verified);
+    //     return;
+    //   } else {
+    //     setVerified(false);
+    //   }
+    //   console.log(verified);
+    // }
   }, [data]);
 
+  // const addr = function(results){
+  //   let list = results.map((item) => 
+  //     item
+  //   )
+  //   setUsers(list)
+  // }
+
   const handleUpload = () => {
+    const allTx = [];
     Papa.parse(document.getElementById('uploadfile').files[0],
       {
         download: true,
         header: true,
         skipEmptyLines: true,
         complete: function(results){
-          
-          // setUsers(list)
+          // console.log(result.data[0],Txhash);
+          for (let i =0; i < results.data.length; i++){
+            allTx.push(results.data[i].Txhash)
+          }
+          setUsers(allTx)
+          // setUsers(results)
+          // addr(results)
         }
       }
     )
