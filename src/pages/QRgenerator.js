@@ -49,7 +49,7 @@ function QRgenerator() {
         {qr ? (
           <div container>
             <div item xs={10}>
-              <input
+              <textarea
                 style={{ fontSize: 18, width: 250, height: 100 }}
                 rowsMax={4}
                 defaultValue={qr}
