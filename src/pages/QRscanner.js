@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { QrReader } from 'react-qr-reader';
 
 function QRscanner() {
-  const users = [ 'LordRanchoatos', 'Emma', 'Rexy', 'Fiyin', ];
+  const users = ['LordRanchoatos', 'Emma', 'Rexy', 'Fiyin'];
   const [data, setData] = useState('No result');
   const [verified, setVerified] = useState(false);
 
@@ -11,7 +11,6 @@ function QRscanner() {
     for (let i = 0; i < users.length; i++) {
       if (data === users[i]) {
         // handleView()
-        console.log(typeof verified)
         setVerified(!verified);
         return;
       } else {
@@ -33,7 +32,7 @@ function QRscanner() {
         width: '400px',
       }}
     >
-      {verified ? (
+      {verified && (data !== '') ? (
         <div>
           <h1>verified</h1>
         </div>
@@ -41,8 +40,7 @@ function QRscanner() {
         <QrReader
           ViewFinder={function noRefCheck() {}}
           videoId="video"
-          scanDelay={500}
-
+          scanDelay={5000}
           onResult={(result, error) => {
             if (!!result) {
               setData(result?.text);
@@ -58,7 +56,14 @@ function QRscanner() {
       <p>{verified ? 'Valid ticket' : 'User Not Found'}</p>
       <p>{verified}</p>
       <p>{data}</p>
-      <button onClick={() => setVerified(false)}>Scan</button>
+      <button
+        onClick={() => {
+          setData('');
+          setVerified(false);
+        }}
+      >
+        Scan
+      </button>
     </div>
   );
 }
