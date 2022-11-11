@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { QrReader } from 'react-qr-reader';
+import Papa from 'papaparse';
 
 function QRscanner() {
-  const users = ['LordRanchoatos', 'Emma', 'Rexy', 'Fiyin'];
+  // const users = ['LordRanchoatos', 'Emma', 'Rexy', 'Fiyin'];
+  const [ users, setUsers ] =useState([])
   const [data, setData] = useState('No result');
   const [verified, setVerified] = useState(false);
 
@@ -21,37 +23,59 @@ function QRscanner() {
     }
   }, [data]);
 
+  const handleUpload = () => {
+    Papa.parse(document.getElementById('uploadfile').files[0],
+      {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: function(results){
+          
+          // setUsers(list)
+        }
+      }
+    )
+    console.log(users)
+  }
+
   // const handleView = () => {
   //   setVerified('true')
   // }
 
   return (
-    <div
-      style={{
-        margin: 'auto',
-        width: '400px',
-      }}
-    >
-      {verified && (data !== '') ? (
+    <div>
+      <input type='file' id='uploadfile' accept='.csv' />
+      <button onClick={handleUpload} id='uploadconfirm'>Upload File</button>
+
+
+
+      {verified && data !== '' ? (
         <div>
           <h1>verified</h1>
         </div>
       ) : (
-        <QrReader
-          ViewFinder={function noRefCheck() {}}
-          videoId="video"
-          scanDelay={5000}
-          onResult={(result, error) => {
-            if (!!result) {
-              setData(result?.text);
-            }
-
-            if (!!error) {
-              console.info(error);
-            }
+        <div
+          style={{
+            margin: 'auto',
+            width: '400px',
           }}
-          // style={{ height: 240+ "px", width: 320 + 'px'}}
-        />
+        >
+          <QrReader
+            ViewFinder={function noRefCheck() {}}
+            videoId="video"
+            scanDelay={5000}
+            onResult={(result, error) => {
+              if (!!result) {
+                setData(result?.text);
+              }
+
+              if (!!error) {
+                console.info(error);
+              }
+            }}
+            // style={{ height: 240+ "px", width: 320 + 'px'}}
+          />
+        </div>
       )}
       <p>{verified ? 'Valid ticket' : 'User Not Found'}</p>
       <p>{verified}</p>
